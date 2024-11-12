@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types'; // استيراد PropTypes للتحقق من الخصائص
-import { styled, useTheme, Tooltip } from "@mui/material";
+import { styled, useTheme, Tooltip, Avatar, Typography } from "@mui/material";
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -121,6 +121,9 @@ const SideBar = ({ open = false, handleDrawerClose }) => {
           {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
       </DrawerHeader>
+      <Avatar sx={{mx: "auto"}} alt="Remy Sharp" src="/Admin_img.PNG"/>
+      <Typography variant='body1' align='center' className='This'>Omar Alkhouly</Typography>
+      <Typography variant='body1' align='center' className='This'>Admin</Typography>
       {/* خط الخفيف بين المجموعات */}
       <Divider />
       <List>
