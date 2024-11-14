@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types'; // استيراد PropTypes للتحقق من الخصائص
-import { styled, useTheme, Tooltip } from "@mui/material";
+import { styled, useTheme, Tooltip, Avatar, Typography } from "@mui/material";
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -11,8 +11,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import MuiDrawer from '@mui/material/Drawer';
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -30,7 +28,7 @@ import { grey } from "@mui/material/colors";
 
 const drawerWidth = 240;
 
-const openedMixin = (theme) => ({
+const openedMixin = ( theme ) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
@@ -39,7 +37,7 @@ const openedMixin = (theme) => ({
   overflowX: 'hidden',
 });
 
-const closedMixin = (theme) => ({
+const closedMixin = ( theme ) => ({
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -121,6 +119,23 @@ const SideBar = ({ open = false, handleDrawerClose }) => {
           {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
       </DrawerHeader>
+      <Avatar sx={{
+        mx: "auto",
+        width: open? 88 : 44,
+        height: open? 88 : 44,
+        my:3,
+        border:"1px solid grey",
+        transition: "0.25s"
+        }} alt="Remy Sharp" src="/Admin_img.PNG"/>
+      <Typography variant='body1' align='center' 
+      sx={{fontSize:open? 17 : 0 , transition: "0.25s"}}>
+        Omar Alkhouly
+        </Typography>
+      <Typography variant='body1' align='center' 
+      sx={{fontSize:open? 15 : 0 , my:open? 1 : 0 , transition: "0.25s" 
+      , color: theme.palette.info.main , cursor: "pointer"}}>
+        Admin
+        </Typography>
       {/* خط الخفيف بين المجموعات */}
       <Divider />
       <List>
