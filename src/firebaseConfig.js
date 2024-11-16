@@ -1,4 +1,3 @@
-// src/firebaseConfig.js
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
@@ -10,7 +9,5 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 export default app;
