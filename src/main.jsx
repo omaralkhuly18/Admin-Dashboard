@@ -21,6 +21,9 @@ import PieChart from "./page/pieChart/PieChart";
 import LineChart from "./page/lineChart/LineChart";
 import Geography from "./page/geography/Geography";
 import NotFound from "./page/notFound/NotFound";
+import Profile from "./page/Profile/Profile";
+import MyAccount from "./page/MyAccount/MyAccount";
+import Logout from "./page/Logout/Logout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +39,9 @@ const router = createBrowserRouter(
       <Route path="pie" element={<PieChart />} />
       <Route path="line" element={<LineChart />} />
       <Route path="geography" element={<Geography />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/my-account" element={<MyAccount />} />
+      <Route path="/logout" element={<Logout />} />
       <Route path="*" element={<NotFound />} />
     </Route>
   )

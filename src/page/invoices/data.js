@@ -1,46 +1,28 @@
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import app from "../../firebaseConfig"; // مسار إعدادات Firebase
+
+const db = getFirestore(app);
+
+export const fetchData = async () => {
+  const querySnapshot = await getDocs(collection(db, "users"));
+  const rows = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return rows;
+};
 
 export const columns = [
-  { field: "id", headerName: "ID", width: 33 },
-  { field: "registrarId", headerName: "Registrar ID" },
-  {
-    field: "name",
-    headerName: "Name",
-    flex: 1,
-    cellClassName: "name-column--cell",
-  },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    headerAlign: "left",
-    align: "left",
-    flex: 1,
-  },
-  {
-    field: "phone",
-    headerName: "Phone Number",
-    flex: 1,
-  },
-  {
-    field: "email",
-    headerName: "Email",
-    flex: 1,
-  },
-  {
-    field: "address",
-    headerName: "Address",
-    flex: 1,
-  },
-  {
-    field: "city",
-    headerName: "City",
-    flex: 1,
-  },
-  {
-    field: "zipCode",
-    headerName: "Zip Code",
-  },
+  { field: "id", headerName: "ID", width: 90 },
+  { field: "name", headerName: "Name", width: 150 },
+  { field: "email", headerName: "Email", width: 200 },
+  { field: "age", headerName: "Age", type: "number", width: 100 },
+  { field: "phone", headerName: "Phone", width: 150 },
+  { field: "address", headerName: "Address", width: 200 },
+  { field: "city", headerName: "City", width: 120 },
+  { field: "zipCode", headerName: "Zip Code", width: 100 },
 ];
+
 
 export const rows = [
   {

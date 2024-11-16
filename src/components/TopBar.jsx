@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import React , {useState} from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import MuiAppBar from '@mui/material/AppBar';
@@ -83,7 +84,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const TopBar = ({ open, handleDrawerOpen, setMode }) => {
 
     const theme = useTheme();
-
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [menuType, setMenuType] = useState(null); // لتحديد نوع القائمة المفتوحة
 
@@ -95,6 +96,12 @@ const TopBar = ({ open, handleDrawerOpen, setMode }) => {
     const handleClose = () => {
         setAnchorEl(null);
         setMenuType(null);
+    };
+
+
+    const handleMenuClick = (path) => {
+        navigate(path); // التنقل إلى المسار المطلوب
+        handleClose(); // إغلاق القائمة
     };
 
     return (
@@ -161,7 +168,11 @@ const TopBar = ({ open, handleDrawerOpen, setMode }) => {
                     </IconButton>
 
                     {/* زر الحساب الشخصي */}
-                    <IconButton color="inherit" onClick={(event) => handleClick(event, 'profile')} aria-label="profile">
+                    <IconButton
+                        color="inherit"
+                        onClick={(event) => handleClick(event, "profile")}
+                        aria-label="profile"
+                    >
                         <PersonOutlinedIcon />
                     </IconButton>
                 </Stack>
@@ -185,11 +196,17 @@ const TopBar = ({ open, handleDrawerOpen, setMode }) => {
                         <MenuItem onClick={handleClose}>Setting 3</MenuItem>
                     </>
                 )}
-                {menuType === 'profile' && (
+                {menuType === "profile" && (
                     <>
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My Account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        <MenuItem onClick={() => handleMenuClick("/profile")}>
+                            Profile
+                        </MenuItem>
+                        <MenuItem onClick={() => handleMenuClick("/my-account")}>
+                            My Account
+                        </MenuItem>
+                        <MenuItem onClick={() => handleMenuClick("/logout")}>
+                            Logout
+                        </MenuItem>
                     </>
                 )}
             </Menu>
