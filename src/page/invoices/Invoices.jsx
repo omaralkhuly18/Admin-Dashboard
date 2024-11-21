@@ -13,6 +13,7 @@ const Invoices = () => {
 
   // استدعاء البيانات من Firestore
   useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
     const fetchInvoices = async () => {
       const db = getFirestore(app);
       const querySnapshot = await getDocs(collection(db, "invoices"));
@@ -46,3 +47,7 @@ const Invoices = () => {
 };
 
 export default Invoices;
+function getData() {
+  throw new Error("Function not implemented.");
+}
+
