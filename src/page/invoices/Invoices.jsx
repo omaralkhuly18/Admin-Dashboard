@@ -1,25 +1,27 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Box, CircularProgress } from "@mui/material";
-import { columns } from "./data"; // العمود فقط ثابت
+import { Box } from "@mui/material";
+import { columns } from "./data";
 import Header from "../../components/Header";
-import { fetchData } from "./data"; // الدالة لجلب البيانات من Firebase
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import app from "../../firebaseConfig"; // تأكد من استخدام مسار إعداد Firebase الصحيح
 
 const Invoices = () => {
-  const [rows, setRows] = useState([]); // حالة لتخزين البيانات
-  const [loading, setLoading] = useState(true); // حالة لتحميل البيانات
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // استدعاء البيانات من Firestore
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const fetchedData = await fetchData();
-        setRows(fetchedData); // تخزين البيانات في الحالة
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // إيقاف التحميل
-      }
+    const fetchInvoices = async () => {
+      const db = getFirestore(app);
+      const querySnapshot = await getDocs(collection(db, "invoices"));
+      const fetchedRows = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setRows(fetchedRows);
+      setLoading(false);
     };
 
     getData();
@@ -29,18 +31,15 @@ const Invoices = () => {
     <Box>
       <Header title="INVOICES" subTitle="List of Invoice Balances" />
       <Box sx={{ height: 650, mx: "auto" }}>
-        {loading ? ( // عرض مؤشر التحميل أثناء جلب البيانات
-          <CircularProgress sx={{ display: "block", mx: "auto", my: 4 }} />
-        ) : (
-          <DataGrid
-            checkboxSelection
-            slots={{
-              toolbar: GridToolbar,
-            }}
-            rows={rows}
-            columns={columns}
-          />
-        )}
+        <DataGrid
+          checkboxSelection
+          loading={loading}
+          slots={{
+            toolbar: GridToolbar,
+          }}
+          rows={rows}
+          columns={columns}
+        />
       </Box>
     </Box>
   );
