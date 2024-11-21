@@ -13,19 +13,23 @@ const Invoices = () => {
 
   // استدعاء البيانات من Firestore
   useEffect(() => {
-    // eslint-disable-next-line no-unused-vars
     const fetchInvoices = async () => {
-      const db = getFirestore(app);
-      const querySnapshot = await getDocs(collection(db, "invoices"));
-      const fetchedRows = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setRows(fetchedRows);
-      setLoading(false);
+      try {
+        const db = getFirestore(app);
+        const querySnapshot = await getDocs(collection(db, "invoices"));
+        const fetchedRows = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setRows(fetchedRows);
+      } catch (error) {
+        console.error("Error fetching invoices:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    getData();
+    fetchInvoices();
   }, []);
 
   return (
@@ -47,7 +51,3 @@ const Invoices = () => {
 };
 
 export default Invoices;
-function getData() {
-  throw new Error("Function not implemented.");
-}
-
