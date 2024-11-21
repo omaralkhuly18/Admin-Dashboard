@@ -1,6 +1,7 @@
+// @ts-nocheck
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box, TextField, Button, Typography, Snackbar, Alert } from "@mui/material";
 import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
 import app from "../../firebaseConfig";
 
@@ -18,14 +19,20 @@ const Profile = () => {
   });
 
   const [error, setError] = useState({});
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const userId = "1"; // افتراضياً ID المستخدم
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userDoc = await getDoc(doc(db, "users", userId));
-      if (userDoc.exists()) {
-        // @ts-ignore
-        setFormData(userDoc.data());
+      try {
+        const userDoc = await getDoc(doc(db, "users", userId));
+        if (userDoc.exists()) {
+          setFormData(userDoc.data());
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     };
     fetchUserData();
@@ -36,10 +43,13 @@ const Profile = () => {
     if (!formData.name.trim()) errors.name = "Name is required";
     if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email))
       errors.email = "Valid email is required";
-    // @ts-ignore
     if (!formData.age || isNaN(formData.age)) errors.age = "Valid age is required";
     if (!formData.phone || formData.phone.length < 10)
       errors.phone = "Phone number must be at least 10 digits";
+    if (!formData.address.trim()) errors.address = "Address is required";
+    if (!formData.city.trim()) errors.city = "City is required";
+    if (!formData.zipCode.trim()) errors.zipCode = "Zip code is required";
+
     setError(errors);
     return Object.keys(errors).length === 0;
   };
@@ -50,9 +60,10 @@ const Profile = () => {
 
     try {
       await updateDoc(doc(db, "users", userId), formData);
-      alert("Profile updated successfully!");
+      setSuccess(true);
     } catch (error) {
       console.error("Error updating profile:", error);
+      setErrorMessage("Failed to update profile. Please try again.");
     }
   };
 
@@ -76,83 +87,36 @@ const Profile = () => {
         Update Profile
       </Typography>
       <form onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          // @ts-ignore
-          error={!!error.name}
-          // @ts-ignore
-          helperText={error.name}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          // @ts-ignore
-          error={!!error.email}
-          // @ts-ignore
-          helperText={error.email}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label="Age"
-          name="age"
-          type="number"
-          value={formData.age}
-          onChange={handleChange}
-          // @ts-ignore
-          error={!!error.age}
-          // @ts-ignore
-          helperText={error.age}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label="Phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          // @ts-ignore
-          error={!!error.phone}
-          // @ts-ignore
-          helperText={error.phone}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label="Address"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label="City"
-          name="city"
-          value={formData.city}
-          onChange={handleChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          fullWidth
-          label="Zip Code"
-          name="zipCode"
-          value={formData.zipCode}
-          onChange={handleChange}
-          sx={{ mb: 2 }}
-        />
+        {["name", "email", "age", "phone", "address", "city", "zipCode"].map((field) => (
+          <TextField
+            key={field}
+            fullWidth
+            label={field.charAt(0).toUpperCase() + field.slice(1)}
+            name={field}
+            value={formData[field]}
+            onChange={handleChange}
+            error={!!error[field]}
+            helperText={error[field]}
+            sx={{ mb: 2 }}
+            type={field === "age" || field === "zipCode" ? "number" : "text"}
+          />
+        ))}
         <Button type="submit" variant="contained" color="primary" fullWidth>
           Update
         </Button>
       </form>
+      <Snackbar open={success} autoHideDuration={3000} onClose={() => setSuccess(false)}>
+        <Alert onClose={() => setSuccess(false)} severity="success">
+          Profile updated successfully!
+        </Alert>
+      </Snackbar>
+      {errorMessage && (
+        <Snackbar open autoHideDuration={3000} onClose={() => setErrorMessage("")}>
+          <Alert onClose={() => setErrorMessage("")} severity="error">
+            {errorMessage}
+          </Alert>
+        </Snackbar>
+      )}
     </Box>
   );
 };
