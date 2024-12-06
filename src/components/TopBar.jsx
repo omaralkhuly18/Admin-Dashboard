@@ -157,15 +157,15 @@ const TopBar = ({ open, handleDrawerOpen, setMode }) => {
                             <DarkModeOutlinedIcon />
                         </IconButton>
                     )}
-                    {/* زر التنبيهات */}
+                    {/* زر التنبيهات
                     <IconButton color="inherit" onClick={(event) => handleClick(event, 'notifications')} aria-label="notifications">
                         <NotificationsNoneOutlinedIcon />
                     </IconButton>
 
-                    {/* زر الإعدادات */}
+                    زر الإعدادات
                     <IconButton color="inherit" onClick={(event) => handleClick(event, 'settings')} aria-label="settings">
                         <SettingsOutlinedIcon />
-                    </IconButton>
+                    </IconButton> */}
 
                     {/* زر الحساب الشخصي */}
                     <IconButton
