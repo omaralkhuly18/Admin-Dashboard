@@ -182,7 +182,7 @@ const TopBar = ({ open, handleDrawerOpen, setMode }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                {menuType === 'notifications' && (
+                {/* {menuType === 'notifications' && (
                     <>
                         <MenuItem onClick={handleClose}>Notification 1</MenuItem>
                         <MenuItem onClick={handleClose}>Notification 2</MenuItem>
@@ -195,7 +195,7 @@ const TopBar = ({ open, handleDrawerOpen, setMode }) => {
                         <MenuItem onClick={handleClose}>Setting 2</MenuItem>
                         <MenuItem onClick={handleClose}>Setting 3</MenuItem>
                     </>
-                )}
+                )} */}
                 {menuType === "profile" && (
                     <>
                         <MenuItem onClick={() => handleMenuClick("/profile")}>
