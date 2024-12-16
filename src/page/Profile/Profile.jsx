@@ -1,11 +1,7 @@
 // @ts-nocheck
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Snackbar, Alert } from "@mui/material";
-import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
-import app from "../../firebaseConfig";
-
-const db = getFirestore(app);
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -21,22 +17,6 @@ const Profile = () => {
   const [error, setError] = useState({});
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const userId = "1"; // افتراضياً ID المستخدم
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userDoc = await getDoc(doc(db, "users", userId));
-        if (userDoc.exists()) {
-          setFormData(userDoc.data());
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUserData();
-  }, [userId]);
 
   const validate = () => {
     let errors = {};
@@ -54,12 +34,13 @@ const Profile = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
 
+    // Placeholder for updating data logic
     try {
-      await updateDoc(doc(db, "users", userId), formData);
+      console.log("Profile updated successfully", formData);
       setSuccess(true);
     } catch (error) {
       console.error("Error updating profile:", error);
